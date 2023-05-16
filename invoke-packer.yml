@@ -1,3 +1,8 @@
+trigger:
+  branches:
+    include:
+    - main
+
 jobs:
 - job: 'test'
   displayName: 'Test PSNativeCommandArgumentPassing'
@@ -7,7 +12,6 @@ jobs:
   timeoutInMinutes: 10
   
   steps:
-  - checkout: self
   - checkout: runner-images
   
   - pwsh: |

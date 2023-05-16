@@ -1,0 +1,29 @@
+jobs:
+- job: 'test'
+  displayName: 'Test PSNativeCommandArgumentPassing'
+  pool:
+    name: 'Azure Pipelines'
+    vmImage: ubuntu-latest
+  timeoutInMinutes: 10
+  
+  steps:
+  - checkout: self
+  - checkout: runner-images
+  
+  - pwsh: |
+      $PSVersionTable
+      $AgentIp = (Invoke-RestMethod http://ipinfo.io/json).ip
+      $AgentIp = '[ "{0}" ]' -f $AgentIp
+      packer build -var "allowed_inbound_ip_addresses=$($AgentIp)" "runner-images/images/linux/ubuntu2204.pkr.hcl"
+    name: noQuotes2204
+    displayName: 'Check no quotes 22.04'
+    condition: always()
+    
+  - pwsh: |
+      $PSVersionTable
+      $AgentIp = (Invoke-RestMethod http://ipinfo.io/json).ip
+      $AgentIp = '[ \"{0}\" ]' -f $AgentIp
+      packer build -var "allowed_inbound_ip_addresses=$($AgentIp)" "runner-images/images/linux/ubuntu2204.pkr.hcl"
+    name: quotes2204
+    displayName: 'Check no quotes 22.04'
+    condition: always()

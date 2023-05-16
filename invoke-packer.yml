@@ -16,6 +16,12 @@ jobs:
   - script: git clone https://github.com/actions/runner-images
   
   - pwsh: |
+      Enable-ExperimentalFeature -Name PSNativeCommandArgumentPassing
+    name: enable
+    displayName: 'Enable PSNativeCommandArgumentPassing'
+    condition: always()
+  
+  - pwsh: |
       $PSVersionTable
       $AgentIp = (Invoke-RestMethod http://ipinfo.io/json).ip
       $AgentIp = '[ "{0}" ]' -f $AgentIp

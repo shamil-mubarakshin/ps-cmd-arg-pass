@@ -13,7 +13,7 @@ jobs:
   
   steps:
   - checkout: self
-  - checkout: git://shamil-mubarakshin/runner-images@main
+  - script: git clone https://github.com/actions/runner-images
   
   - pwsh: |
       $PSVersionTable

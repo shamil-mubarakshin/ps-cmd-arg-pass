@@ -11,8 +11,9 @@ jobs:
     steps:
       - uses: tgymnich/fork-sync@v1.8
         with:
-          owner: shamil-mubarakshin
-          repo: ps-cmd-arg-pass-fork
-          base: main
-          head: main
+          # owner: shamil-mubarakshin
+          # repo: ps-cmd-arg-pass-fork
+          base: shamil-mubarakshin/ps-cmd-arg-pass-fork:main
+          head: shamil-mubarakshin/ps-cmd-arg-pass:main
           token: ${{ secrets.PERSONAL_SYNC_TOKEN }}
+          retries: 1

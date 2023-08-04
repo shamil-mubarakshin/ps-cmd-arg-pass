@@ -9,11 +9,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: tgymnich/fork-sync@v1.8
-        with:
-          # owner: shamil-mubarakshin
-          # repo: ps-cmd-arg-pass-fork
-          base: shamil-mubarakshin/ps-cmd-arg-pass-fork:main
-          head: shamil-mubarakshin/ps-cmd-arg-pass:main
-          token: ${{ secrets.PERSONAL_SYNC_TOKEN }}
-          retries: 1
+      # - uses: tgymnich/fork-sync@v1.8
+      #   with:
+      #     # owner: shamil-mubarakshin
+      #     # repo: ps-cmd-arg-pass-fork
+      #     base: shamil-mubarakshin/ps-cmd-arg-pass-fork:main
+      #     head: shamil-mubarakshin/ps-cmd-arg-pass:main
+      #     token: ${{ secrets.PERSONAL_SYNC_TOKEN }}
+      #     retries: 1
+      - name: Get Date
+        shell: pwsh
+        run: |
+          Get-Date
+          

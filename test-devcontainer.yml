@@ -11,10 +11,28 @@ pool:
   vmImage: ubuntu-latest
 
 steps:
+  - checkout: none
+
+  - script: ls -la
+    displayName: "ls la"
+
   - script: git clone https://github.com/shamil-mubarakshin/devcontainer-ci-test.git
+    displayName: "clone repo"
 
   - script: |
       npm install --location=global @devcontainers/cli
+    displayName: "install npm"
+    
+  - script: |
+      pwd
+      groups
+      cat /etc/group
+      lslogins -u
+      id
+      whoami
+      ls -la
+    displayName: Debugging
   
   - script: |
+      cd devcontainer-ci-test
       devcontainer up --workspace-folder . --remove-existing-container --build-no-cache --log-level trace

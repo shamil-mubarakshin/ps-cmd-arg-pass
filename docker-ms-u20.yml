@@ -1,0 +1,38 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+name: Dev Container CI
+
+trigger: none
+pool:
+  name: 'Azure Pipelines'
+  vmImage: ubuntu-20.04
+
+steps:
+  - checkout: none
+
+  - script: ls -la
+    displayName: "ls la"
+
+  - script: git clone https://github.com/shamil-mubarakshin/devcontainer-ci-test.git
+    displayName: "clone repo"
+
+  - script: |
+      npm install --location=global @devcontainers/cli
+    displayName: "install npm"
+    
+  - script: |
+      pwd
+      groups
+      cat /etc/group
+      lslogins -u
+      id
+      whoami
+      ls -la
+    displayName: Debugging
+  
+  - script: |
+      cd devcontainer-ci-test
+      devcontainer up --workspace-folder . --remove-existing-container --build-no-cache --log-level trace

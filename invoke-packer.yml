@@ -4,37 +4,57 @@ trigger:
     - main
 
 jobs:
-- job: 'test'
-  displayName: 'Test PSNativeCommandArgumentPassing'
+- job: Job_1
+  displayName: Agent job 1
   pool:
-    name: 'Azure Pipelines'
-    vmImage: ubuntu-latest
-  timeoutInMinutes: 10
-  
+    vmImage: windows-latest
   steps:
   - checkout: self
-  - script: git clone https://github.com/actions/runner-images
+    fetchDepth: 1
+  - task: AzureCLI@2
+    displayName: Restoring the Latest Backup to DR
+    inputs:
+      connectedServiceNameARM: 'Ecosystem_eng connection'
+      scriptType: ps
+      scriptLocation: inlineScript
+      inlineScript: >+
+        az --version
+      useGlobalConfig: true
+
+
+
+# jobs:
+# - job: 'test'
+#   displayName: 'Test PSNativeCommandArgumentPassing'
+#   pool:
+#     name: 'Azure Pipelines'
+#     vmImage: ubuntu-latest
+#   timeoutInMinutes: 10
   
-  - pwsh: |
-      Enable-ExperimentalFeature -Name PSNativeCommandArgumentPassing
-    name: enable
-    displayName: 'Enable PSNativeCommandArgumentPassing'
-    condition: always()
+#   steps:
+#   - checkout: self
+#   - script: git clone https://github.com/actions/runner-images
   
-  - pwsh: |
-      $PSVersionTable
-      $AgentIp = (Invoke-RestMethod http://ipinfo.io/json).ip
-      $AgentIp = '[ "{0}" ]' -f $AgentIp
-      packer build -var "allowed_inbound_ip_addresses=$($AgentIp)" "runner-images/images/linux/ubuntu2204.pkr.hcl"
-    name: noQuotes2204
-    displayName: 'Check no quotes 22.04'
-    condition: always()
+#   - pwsh: |
+#       Enable-ExperimentalFeature -Name PSNativeCommandArgumentPassing
+#     name: enable
+#     displayName: 'Enable PSNativeCommandArgumentPassing'
+#     condition: always()
+  
+#   - pwsh: |
+#       $PSVersionTable
+#       $AgentIp = (Invoke-RestMethod http://ipinfo.io/json).ip
+#       $AgentIp = '[ "{0}" ]' -f $AgentIp
+#       packer build -var "allowed_inbound_ip_addresses=$($AgentIp)" "runner-images/images/linux/ubuntu2204.pkr.hcl"
+#     name: noQuotes2204
+#     displayName: 'Check no quotes 22.04'
+#     condition: always()
     
-  - pwsh: |
-      $PSVersionTable
-      $AgentIp = (Invoke-RestMethod http://ipinfo.io/json).ip
-      $AgentIp = '[ \"{0}\" ]' -f $AgentIp
-      packer build -var "allowed_inbound_ip_addresses=$($AgentIp)" "runner-images/images/linux/ubuntu2204.pkr.hcl"
-    name: quotes2204
-    displayName: 'Check no quotes 22.04'
-    condition: always()
+#   - pwsh: |
+#       $PSVersionTable
+#       $AgentIp = (Invoke-RestMethod http://ipinfo.io/json).ip
+#       $AgentIp = '[ \"{0}\" ]' -f $AgentIp
+#       packer build -var "allowed_inbound_ip_addresses=$($AgentIp)" "runner-images/images/linux/ubuntu2204.pkr.hcl"
+#     name: quotes2204
+#     displayName: 'Check no quotes 22.04'
+#     condition: always()
